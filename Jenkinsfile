@@ -34,9 +34,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                echo"${WORKSPACE}"
+                  if(BRANCH_NAME=="dev"){
                 bat" IF exist ${sandbox_Deploy_Path} ( echo ${sandbox_Deploy_Path} exists ) ELSE ( mkdir ${sandbox_Deploy_Path} && echo ${sandbox_Deploy_Path} created)"
                 bat"MOVE ${WORKSPACE}\\dist\\test\\* ${sandbox_Deploy_Path}"
+                  }
+                    if(BRANCH_NAME=="main"){
+                bat" IF exist ${production_Deploy_Path} ( echo ${production_Deploy_Path} exists ) ELSE ( mkdir ${production_Deploy_Path} && echo ${production_Deploy_Path} created)"
+                bat"MOVE ${WORKSPACE}\\dist\\test\\* ${production_Deploy_Path}"
+                  }
                 }
             }
         }
